@@ -17,16 +17,33 @@ const pool = new Pool({
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithEmail = function(email) {
-  let user;
-  for (const userId in users) {
-    user = users[userId];
-    if (user.email.toLowerCase() === email.toLowerCase()) {
-      break;
-    } else {
-      user = null;
-    }
-  }
-  return Promise.resolve(user);
+  return pool.query(`
+    SELECT
+      *
+    FROM
+      users
+    WHERE
+      users.email = $1
+  `, [email])
+    .then(data => {
+      const user = data.rows;
+      console.log(user);
+      if (user.length > 0) {
+        return user[0];
+      } else {
+        return null;
+      }
+    });
+
+  // for (const userId in users) {
+  //   user = users[userId];
+  //   if (user.email.toLowerCase() === email.toLowerCase()) {
+  //     break;
+  //   } else {
+  //     user = null;
+  //   }
+  // }
+  // return Promise.resolve(user);
 };
 exports.getUserWithEmail = getUserWithEmail;
 
