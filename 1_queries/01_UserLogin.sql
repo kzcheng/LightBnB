@@ -6,4 +6,4 @@ SELECT
 FROM
   users
 WHERE
-  users.email = 'tristanjacobs@gmail.com'
+  users.email = 't@st.com'
